@@ -3,10 +3,10 @@ import java.util.*;
 public class Sloth {
     public static void main(String[] args) throws InterruptedException, SlothException {
         String logo =
-                "   🌿─────      \n" +
-                        "  ( - . - )    \n" +
-                        "  /(   づ )    \n" +
-                        "  ╯ ╯ ╯ ╯     \n";
+                        "   🌿─────\n" +
+                        "  ( - . - )\n" +
+                        "  /(   づ )\n" +
+                        "  ╯ ╯ ╯ ╯\n";
         String line = "_".repeat(50);
         /* Greetings */
         System.out.println(line);
