@@ -10,7 +10,7 @@ public class Sloth {
         String line = "_".repeat(50);
         /* Greetings */
         System.out.println(line);
-        System.out.println("Hello, I am ... Sloth\n" + logo + "\n" + "How can I help you today?");
+        System.out.println("Hello, I am ... Sloth\n" + logo + "\n" + "How can I help you today?\uD83E\uDDA5");
         System.out.println(line);
         /* List */
         ArrayList<Task> lst = new ArrayList<>();
@@ -19,7 +19,7 @@ public class Sloth {
             String input = sc.nextLine();
             if (input.equalsIgnoreCase("bye")) { // goodbye
                 System.out.println(line);
-                System.out.println("Bye. Hope to see you soon~\nI'm gonna...go back to...sleep  zZZ");
+                System.out.println("Bye. Hope to see you soon~\nI'm gonna...go back to...sleep  zZZ \uD83E\uDDA5");
                 System.out.println(line);
                 break;
             } else if (input.equalsIgnoreCase("list")){ // list out all elements
@@ -31,7 +31,7 @@ public class Sloth {
                 System.out.println(line);
             } else {
                 String[] split = input.split(" ");
-                if (!(split[0].equals("mark") || split[0].equals("unmark"))) {  // add something.
+                if (!(split[0].equals("mark") || split[0].equals("unmark") || split[0].equals("delete"))) {  // add something.
                     System.out.println(line);
                     /* 3 cases: todo, deadline and event. handled in separate function */
                     Task task_to_add = null;
@@ -52,7 +52,7 @@ public class Sloth {
                         System.out.println(e.getMessage());
                     }
                     System.out.println(line);
-                } else {  // mark or unmark
+                } else {  // mark or unmark or delete
                     int idx = Integer.parseInt(split[1]);
                     Task stuff = null;
                     System.out.println(line);
@@ -66,19 +66,20 @@ public class Sloth {
                     try {
                         if (split[0].equals("mark")) {
                             if (stuff.getStatus().equals(" ")) stuff.toggleStatus();
-                            System.out.println("Well... done! I've marked the following as done:");
+                            System.out.println("Well... done! I've marked the following as done:\n" + stuff);
                         } else if (split[0].equals("unmark")) {
                             if (stuff.getStatus().equals("X")) stuff.toggleStatus();
-                            System.out.println("okay... I've marked the following as undone:");
+                            System.out.println("okay... I've marked the following as undone:\n" + stuff);
+                        } else if (split[0].equals("delete")) {
+                            lst.remove(idx - 1);
+                            System.out.println("Got it ..... I remove this task\n" + stuff);
+                            System.out.println("Now you have " + lst.size() + " tasks \uD83E\uDDA5");
                         } else {
                             throw new UnknownCommandException(input);
                         }
                     } catch (UnknownCommandException e) {
                         System.out.println(e.getMessage());
-                        System.out.println(line);
-                        continue;
                     }
-                    System.out.println(stuff);
                     System.out.println(line);
                 }
             }
