@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Sloth {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, SlothException {
         String logo =
                 "   🌿─────      \n" +
                         "  ( - . - )    \n" +
@@ -34,7 +34,14 @@ public class Sloth {
                 if (!(split[0].equals("mark") || split[0].equals("unmark"))) {  // add something.
                     System.out.println(line);
                     /* 3 cases: todo, deadline and event. handled in separate function */
-                    Task task_to_add = TaskParser.parse(input);
+                    Task task_to_add = null;
+                    try {
+                        task_to_add = TaskParser.parse(input);
+                    } catch (SlothException e) {
+                        System.out.println(e.getMessage());
+                        System.out.println(line);
+                        continue;
+                    }
                     try {
                         lst.add(task_to_add);
                         System.out.println("okayy ... I've added " + task_to_add);
@@ -47,14 +54,29 @@ public class Sloth {
                     System.out.println(line);
                 } else {  // mark or unmark
                     int idx = Integer.parseInt(split[1]);
-                    Task stuff = lst.get(idx-1);
+                    Task stuff = null;
                     System.out.println(line);
-                    if (split[0].equals("mark")) {
-                        if (stuff.getStatus().equals(" "))  stuff.toggleStatus();
-                        System.out.println("Well... done! I've marked the following as done:");
-                    } else {
-                        if (stuff.getStatus().equals("X")) stuff.toggleStatus();
-                        System.out.println("okay... I've marked the following as undone:");
+                    try {
+                        stuff = lst.get(idx - 1);
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Sorry, " + idx + " is out of bounds of my list\uD83D\uDE2D");
+                        System.out.println(line);
+                        continue;
+                    }
+                    try {
+                        if (split[0].equals("mark")) {
+                            if (stuff.getStatus().equals(" ")) stuff.toggleStatus();
+                            System.out.println("Well... done! I've marked the following as done:");
+                        } else if (split[0].equals("unmark")) {
+                            if (stuff.getStatus().equals("X")) stuff.toggleStatus();
+                            System.out.println("okay... I've marked the following as undone:");
+                        } else {
+                            throw new UnknownCommandException(input);
+                        }
+                    } catch (UnknownCommandException e) {
+                        System.out.println(e.getMessage());
+                        System.out.println(line);
+                        continue;
                     }
                     System.out.println(stuff);
                     System.out.println(line);
