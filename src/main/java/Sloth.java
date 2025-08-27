@@ -2,8 +2,7 @@ import java.util.*;
 
 public class Sloth {
     public static void main(String[] args) throws InterruptedException, SlothException {
-        String logo =
-                        "   🌿─────\n" +
+        String logo =   "   🌿─────\n" +
                         "  ( - . - )\n" +
                         "  /(   づ )\n" +
                         "  ╯ ╯ ╯ ╯\n";
@@ -13,7 +12,7 @@ public class Sloth {
         System.out.println("Hello, I am ... Sloth\n" + logo + "\n" + "How can I help you today?\uD83E\uDDA5");
         System.out.println(line);
         /* List */
-        ArrayList<Task> lst = new ArrayList<>();
+        ArrayList<Task> lst = Storage.load();
         Scanner sc = new Scanner(System.in);
         while (true) {
             String input = sc.nextLine();
@@ -21,6 +20,7 @@ public class Sloth {
                 System.out.println(line);
                 System.out.println("Bye. Hope to see you soon~\nI'm gonna...go back to...sleep  zZZ \uD83E\uDDA5");
                 System.out.println(line);
+                Storage.save(lst);
                 break;
             } else if (input.equalsIgnoreCase("list")){ // list out all elements
                 System.out.println(line);
@@ -36,14 +36,14 @@ public class Sloth {
                     /* 3 cases: todo, deadline and event. handled in separate function */
                     Task task_to_add = null;
                     try {
-                        task_to_add = TaskParser.parse(input);
+                        task_to_add = TaskParser.parse_input(input);
+                        lst.add(task_to_add);
                     } catch (SlothException e) {
                         System.out.println(e.getMessage());
                         System.out.println(line);
                         continue;
                     }
                     try {
-                        lst.add(task_to_add);
                         System.out.println("okayy ... I've added " + task_to_add);
                         System.out.println("Let... me.... think...");
                         Thread.sleep(2000);
@@ -59,19 +59,21 @@ public class Sloth {
                     try {
                         stuff = lst.get(idx - 1);
                     } catch (IndexOutOfBoundsException e) {
-                        System.out.println("Sorry, " + idx + " is out of bounds of my list\uD83D\uDE2D");
+                        System.out.println("Oh no the little sloth cannot find " + idx + " in current list\uD83D\uDE2D");
                         System.out.println(line);
                         continue;
                     }
                     try {
                         if (split[0].equals("mark")) {
                             if (stuff.getStatus().equals(" ")) stuff.toggleStatus();
-                            System.out.println("Well... done! I've marked the following as done:\n" + stuff);
+                            System.out.println("sniff sniff! I've marked the following as done:\n" + stuff);
                         } else if (split[0].equals("unmark")) {
                             if (stuff.getStatus().equals("X")) stuff.toggleStatus();
                             System.out.println("okay... I've marked the following as undone:\n" + stuff);
                         } else if (split[0].equals("delete")) {
+                            Task task_to_delete = lst.get(idx - 1);
                             lst.remove(idx - 1);
+
                             System.out.println("Got it ..... I remove this task\n" + stuff);
                             System.out.println("Now you have " + lst.size() + " tasks \uD83E\uDDA5");
                         } else {

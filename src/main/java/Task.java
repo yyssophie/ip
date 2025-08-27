@@ -15,6 +15,10 @@ public class Task {
         return this.done? "X" : " ";
     }
 
+    public boolean isDone() {
+        return this.done;
+    }
+
     public void toggleStatus() {
         this.done = !this.done;
     }
@@ -23,6 +27,11 @@ public class Task {
     public String toString() {
         return "[" + getStatus() + "] " + getContent();
     }
+
+    public String to_storage_string() {
+        return "T | " + (this.done ? "1" : "0") + " | " + this.content;
+    }
+
 }
 
 class ToDo extends Task {
@@ -35,6 +44,7 @@ class ToDo extends Task {
     public String toString() {
         return "[" + this.type + "] [" + this.getStatus() + "] " + this.getContent();
     }
+
 }
 
 class Deadline extends Task {
@@ -49,6 +59,11 @@ class Deadline extends Task {
     public String toString() {
         return "[" + this.type + "] [" + this.getStatus() + "] " + this.getContent()
                 + " (by: " + this.endDate + ")";
+    }
+
+    @Override
+    public String to_storage_string() {
+        return "D | " + (this.isDone() ? "1" : "0") + " | " + getContent() + " | " + this.endDate;
     }
 }
 
@@ -67,6 +82,12 @@ class Event extends Task {
     public String toString() {
         return "[" + this.type + "] [" + this.getStatus() + "] " + this.getContent()
                 + " (from: " + this.startDate + " to: " + this.endDate + ")";
+    }
+
+    @Override
+    public String to_storage_string() {
+        return "E | " + (this.isDone() ? "1" : "0") + " | " + getContent() + " | " +
+                this.startDate + " | " + this.endDate;
     }
 }
 
