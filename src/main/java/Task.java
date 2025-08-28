@@ -1,3 +1,6 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Task {
     private String content;
     private boolean done;
@@ -49,30 +52,32 @@ class ToDo extends Task {
 
 class Deadline extends Task {
     private final String type = "D";
-    private String endDate;
+    private LocalDateTime endDate;
 
-    public Deadline(String content,  String endDate) {
+    public Deadline(String content,  LocalDateTime endDate) {
         super(content);
         this.endDate = endDate;
     }
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm");
         return "[" + this.type + "] [" + this.getStatus() + "] " + this.getContent()
-                + " (by: " + this.endDate + ")";
+                + " (by: " + this.endDate.format(formatter) + ")";
     }
 
     @Override
     public String to_storage_string() {
-        return "D | " + (this.isDone() ? "1" : "0") + " | " + getContent() + " | " + this.endDate;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm");
+        return "D | " + (this.isDone() ? "1" : "0") + " | " + getContent() + " | " + this.endDate.format(formatter);
     }
 }
 
 class Event extends Task {
     private final String type = "E";
-    private String endDate;
-    private String startDate;
+    private LocalDateTime endDate;
+    private LocalDateTime startDate;
 
-    public Event(String content, String startDate, String endDate) {
+    public Event(String content, LocalDateTime startDate, LocalDateTime endDate) {
         super(content);
         this.endDate = endDate;
         this.startDate = startDate;
@@ -80,14 +85,16 @@ class Event extends Task {
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm");
         return "[" + this.type + "] [" + this.getStatus() + "] " + this.getContent()
-                + " (from: " + this.startDate + " to: " + this.endDate + ")";
+                + " (from: " + this.startDate.format(formatter) + " to: " + this.endDate.format(formatter) + ")";
     }
 
     @Override
     public String to_storage_string() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm");
         return "E | " + (this.isDone() ? "1" : "0") + " | " + getContent() + " | " +
-                this.startDate + " | " + this.endDate;
+                this.startDate.format(formatter) + " | " + this.endDate.format(formatter);
     }
 }
 
