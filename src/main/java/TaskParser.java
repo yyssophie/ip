@@ -35,16 +35,17 @@ public class TaskParser {
                 "Try e.g. Apr 18 2025, 18:00 or 2/12/2019 18:00");
     }
 
+    // deal with todo, deadline or event
     public static Task parse_input(String input) throws SlothException {
         Matcher m;
         if ((m = TODO.matcher(input)).matches()) {
-            return new ToDo(m.group("content").trim());
+            return new ToDo(m.group("content"));
         } else if ((m = DEADLINE.matcher(input)).matches()) {
-            String date = m.group("by").trim();
+            String date = m.group("by");
             LocalDateTime d = TaskParser.parseFlexibleDateTime(date);
             return new Deadline(m.group("content").trim(), d);
         } else if ((m = EVENT.matcher(input)).matches()) {
-            String from = m.group("from").trim(), to = m.group("to");
+            String from = m.group("from"), to = m.group("to");
             LocalDateTime f = TaskParser.parseFlexibleDateTime(from), t = TaskParser.parseFlexibleDateTime(to);
             return new Event(m.group("content").trim(), f, t);
         } else {
@@ -59,6 +60,30 @@ public class TaskParser {
                 throw new UnknownCommandException(input);
             }
         }
+    }
+
+    // *** The key part
+    public static Command parse(String input) throws SlothException {
+        String s = input;
+        if (s.equalsIgnoreCase("bye"))  return new ByeCommand();
+        if (s.equalsIgnoreCase("list")) return new ListCommand();
+
+        if (s.startsWith("mark ")) {
+            int idx = Integer.parseInt(s.split("\\s+")[1]);
+            return new MarkCommand(idx);
+        }
+        if (s.startsWith("unmark ")) {
+            int idx = Integer.parseInt(s.split("\\s+")[1]);
+            return new UnmarkCommand(idx);
+        }
+        if (s.startsWith("delete ")) {
+            int idx = Integer.parseInt(s.split("\\s+")[1]);
+            return new DeleteCommand(idx);
+        }
+
+        // everything else is an add: todo / deadline / event
+        Task t = TaskParser.parse_input(s);     // your existing parser incl. dates
+        return new AddTaskCommand(t);
     }
 
     /*format of storage line:
