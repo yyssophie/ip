@@ -1,6 +1,6 @@
-// Ui.java
-import java.util.List;
-import java.util.Scanner;
+package sloth;
+
+import java.util.*;
 
 public class UI {
     private final String line = "_".repeat(50);

@@ -1,6 +1,8 @@
-import java.io.IOException;
+package sloth;
+
 import java.nio.file.*;
 import java.util.*;
+import java.io.IOException;
 
 public class Storage {
     private static final Path dataDir = Paths.get("data");
