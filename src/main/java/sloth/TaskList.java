@@ -1,3 +1,4 @@
+package sloth;
 import java.util.ArrayList;
 
 public class TaskList {
@@ -14,10 +15,12 @@ public class TaskList {
         return tasks.size();
     }
     public ArrayList<Task> asList() {
+
         return this.tasks;
     }
     public Task add(Task t){
-        tasks.add(t); return t;
+        tasks.add(t);
+        return t;
     }
     public Task get(int i){
         return tasks.get(i - 1);
@@ -26,9 +29,15 @@ public class TaskList {
         return tasks.remove(i - 1);
     }
     public Task mark(int i){
-        Task t = get(i); if (t.getStatus().equals(" ")) t.toggleStatus(); return t;
+        Task t = get(i);
+        if (t.getStatus().equals(" "))
+            t.toggleStatus();
+        return t;
     }
     public Task unmark(int i){
-        Task t = get(i); if (t.getStatus().equals("X")) t.toggleStatus(); return t;
+        Task t = get(i);
+        if (t.getStatus().equals("X"))
+            t.toggleStatus();
+        return t;
     }
 }

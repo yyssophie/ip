@@ -1,3 +1,4 @@
+package sloth;
 public class Sloth {
     private final Storage storage;
     private final TaskList tasks;
@@ -22,7 +23,7 @@ public class Sloth {
             } catch (SlothException e) {
                 ui.showError(e.getMessage());
             } catch (IndexOutOfBoundsException e) {
-                ui.showError("Index out of range");
+                ui.showError("sorry :( That index is out of my knowledge.");
             } finally {
                 ui.showLine();
             }
@@ -30,6 +31,7 @@ public class Sloth {
     }
 
     public static void main(String[] args) {
+
         new  Sloth().run();
     }
 }

@@ -1,3 +1,4 @@
+package sloth;
 public class SlothException extends Exception {
     public SlothException(String message) {
         super(message);
