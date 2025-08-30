@@ -30,7 +30,7 @@ public class Storage {
             for (String line : lines) {
                 if (line.isEmpty()) continue;
                 try {
-                    tasks.add(TaskParser.parse_storage(line));
+                    tasks.add(TaskParser.parseStorage(line));
                 } catch (SlothException ex) {
                     // corrupted line; skip but keep going
                     System.err.println("Skipping corrupted line: " + line + "  Reason: " + ex.getMessage());
