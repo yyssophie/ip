@@ -114,4 +114,23 @@ public class UI {
     private void println(String s){
         System.out.println(s);
     }
+
+    /**
+     * Displays the results of a find operation.
+     * Shows all tasks that contain the searched keyword with their original numbering.
+     *
+     * @param matchingTasks the list of tasks that match the search keyword
+     */
+    public void showFoundTasks(ArrayList<Task> matchingTasks) {
+        println(line);
+        if (matchingTasks.isEmpty()) {
+            println("Oops, there is no matching tasks found in your list 🦥");
+        } else {
+            println("aha ~ Here are the matching tasks in your list:");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                println("\t" + (i + 1) + "." + matchingTasks.get(i));
+            }
+        }
+        println(line);
+    }
 }
