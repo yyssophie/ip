@@ -71,16 +71,28 @@ public class TaskParser {
         if (s.equalsIgnoreCase("list")) return new ListCommand();
 
         if (s.startsWith("mark ")) {
-            int idx = Integer.parseInt(s.split("\\s+")[1]);
-            return new MarkCommand(idx);
+            try {
+                int idx = Integer.parseInt(s.split("\\s+")[1]);
+                return new MarkCommand(idx);
+            } catch (NumberFormatException e) {
+                throw new SlothException("eep! This is not a valid number. Try: mark 1");
+            }
         }
         if (s.startsWith("unmark ")) {
-            int idx = Integer.parseInt(s.split("\\s+")[1]);
-            return new UnmarkCommand(idx);
+            try {
+                int idx = Integer.parseInt(s.split("\\s+")[1]);
+                return new UnmarkCommand(idx);
+            } catch (NumberFormatException e) {
+                throw new SlothException("eep! This is not a valid number. Try: unmark 1");
+            }
         }
         if (s.startsWith("delete ")) {
-            int idx = Integer.parseInt(s.split("\\s+")[1]);
-            return new DeleteCommand(idx);
+            try {
+                int idx = Integer.parseInt(s.split("\\s+")[1]);
+                return new DeleteCommand(idx);
+            } catch (NumberFormatException e) {
+                throw new SlothException("eep! This is not a valid number. Try: delete 1");
+            }
         }
 
         // everything else is an add: todo / deadline / event
