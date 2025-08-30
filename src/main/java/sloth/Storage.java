@@ -3,11 +3,21 @@ package sloth;
 import java.nio.file.*;
 import java.util.*;
 import java.io.IOException;
-
+/**
+ * Handles persistent storage of tasks to and from the file system.
+ * Uses a simple text file format to store task data in the data/sloth.txt file.
+ */
 public class Storage {
     private static final Path dataDir = Paths.get("data");
     private static final Path dataFile = dataDir.resolve("sloth.txt");
 
+    /**
+     * Loads tasks from the storage file.
+     * Creates the data directory and file if they don't exist.
+     * Skips corrupted lines and continues loading valid tasks.
+     *
+     * @return ArrayList of loaded tasks, empty if no file exists or on first run
+     */
     public static ArrayList<Task> load() {
         ArrayList<Task> tasks = new ArrayList<>();
         try {
@@ -32,6 +42,13 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Saves the given list of tasks to the storage file.
+     * Creates the data directory if it doesn't exist.
+     * Overwrites the existing file with the current task list.
+     *
+     * @param tasks the list of tasks to save
+     */
     public static void save(ArrayList<Task> tasks) {
         ArrayList<String> lines = new ArrayList<>();
         for (Task t : tasks) lines.add(t.to_storage_string());

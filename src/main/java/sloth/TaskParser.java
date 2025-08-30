@@ -6,6 +6,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Utility class for parsing user input and storage data into Task objects and Commands.
+ * Handles flexible date/time parsing and command interpretation.
+ */
 public class TaskParser {
     private static final Pattern TODO =
             Pattern.compile("^\\s*todo\\s+(?<content>.+)\\s*$");
@@ -14,7 +18,14 @@ public class TaskParser {
     private static final Pattern EVENT =
             Pattern.compile("^\\s*event\\s+(?<content>.+?)\\s+/from\\s+(?<from>.+?)\\s+/to\\s+(?<to>.+)\\s*$");
 
-
+    /**
+     * Parses a date/time string using multiple flexible formats.
+     * Tries various common date formats until one succeeds.
+     *
+     * @param s the date/time string to parse
+     * @return LocalDateTime object representing the parsed date/time
+     * @throws SlothException if the string cannot be parsed with any supported format
+     */
     public static LocalDateTime parseFlexibleDateTime(String s) throws SlothException {
         DateTimeFormatter[] formats = new DateTimeFormatter[] {
                 DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm"), // Apr 18 2005, 1800
@@ -38,6 +49,14 @@ public class TaskParser {
     }
 
     // deal with todo, deadline or event
+    /**
+     * Parses user input to create the appropriate Task object.
+     * Handles todo, deadline, and event task creation with appropriate validation.
+     *
+     * @param input the user input string to parse
+     * @return Task object of the appropriate type (ToDo, Deadline, or Event)
+     * @throws SlothException if the input format is invalid or required information is missing
+     */
     public static Task parse_input(String input) throws SlothException {
         Matcher m;
         if ((m = TODO.matcher(input)).matches()) {
@@ -64,7 +83,14 @@ public class TaskParser {
         }
     }
 
-    // *** The key part
+    /**
+     * Parses user input to create the appropriate Command object.
+     * Handles all supported commands: bye, list, mark, unmark, delete, and task creation commands.
+     *
+     * @param input the user input string to parse
+     * @return Command object that can be executed
+     * @throws SlothException if the input cannot be parsed into a valid command
+     */
     public static Command parse(String input) throws SlothException {
         String s = input;
         if (s.equalsIgnoreCase("bye"))  return new ByeCommand();
@@ -105,6 +131,16 @@ public class TaskParser {
      D | 0 | return book | June 6th
      E | 0 | project meeting | Aug 6th 2-4pm
      T | 1 | join sports club */
+
+    /**
+     * Parses a line from storage file to recreate a Task object.
+     * Expected format: "TYPE | DONE_FLAG | CONTENT | [DATE_INFO]"
+     * where TYPE is T/D/E, DONE_FLAG is 0/1, and DATE_INFO varies by task type.
+     *
+     * @param line the storage line to parse
+     * @return Task object recreated from the storage format
+     * @throws SlothException if the line format is invalid or cannot be parsed
+     */
     public static Task parse_storage(String line) throws SlothException {
         String[] parts = line.split(" \\| ");
         if (parts.length < 3) throw new ParseException("oops, storage line too short");
