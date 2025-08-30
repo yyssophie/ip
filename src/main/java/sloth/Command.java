@@ -1,14 +1,37 @@
 package sloth;
-// Command.java
+/**
+ * Abstract base class for all commands in the Sloth task management system.
+ * Implements the Command pattern to encapsulate user actions.
+ */
 public abstract class Command {
-    public boolean isExit() { return false; }
+    /**
+     * Determines if this command should cause the application to exit.
+     *
+     * @return true if the command should exit the application, false otherwise
+     */
+    public boolean isExit() {
+        return false;
+    }
+    /**
+     * Executes the command with the given task list, UI, and storage.
+     *
+     * @param tasks the task list to operate on
+     * @param ui the user interface for displaying messages
+     * @param storage the storage system for persisting tasks
+     * @throws SlothException if an error occurs during command execution
+     */
     public abstract void execute(TaskList tasks, UI ui, Storage storage) throws SlothException;
 }
 
-// ByeCommand.java
+/**
+ * Command to terminate the Sloth application.
+ * Saves all tasks before exiting and displays a goodbye message.
+ */
 class ByeCommand extends Command {
     @Override
-    public boolean isExit() { return true; }
+    public boolean isExit() {
+        return true;
+    }
     @Override
     public void execute(TaskList tasks, UI ui, Storage storage) {
         storage.save(tasks.asList());
@@ -16,7 +39,9 @@ class ByeCommand extends Command {
     }
 }
 
-// ListCommand.java
+/**
+ * Command to display all tasks in the current task list.
+ */
 class ListCommand extends Command {
     @Override
     public void execute(TaskList tasks, UI ui, Storage storage) {
@@ -24,7 +49,9 @@ class ListCommand extends Command {
     }
 }
 
-// AddTaskCommand.java
+/**
+ * Command to add a new task to the task list.
+ */
 class AddTaskCommand extends Command {
     private final Task task;
     public AddTaskCommand(Task t) { this.task = t; }
@@ -37,7 +64,9 @@ class AddTaskCommand extends Command {
     }
 }
 
-// MarkCommand.java
+/**
+ * Command to mark a task as completed.
+ */
 class MarkCommand extends Command {
     private final int idx;
     public MarkCommand(int oneBasedIdx) {
@@ -51,7 +80,9 @@ class MarkCommand extends Command {
     }
 }
 
-// UnmarkCommand.java
+/**
+ * Command to unmark a task (mark as incomplete).
+ */
 class UnmarkCommand extends Command {
     private final int idx;
     public UnmarkCommand(int oneBasedIdx) { this.idx = oneBasedIdx; }
@@ -62,7 +93,9 @@ class UnmarkCommand extends Command {
     }
 }
 
-// DeleteCommand.java
+/**
+ * Command to delete a task from the task list.
+ */
 class DeleteCommand extends Command {
     private final int idx;
     public DeleteCommand(int oneBasedIdx) { this.idx = oneBasedIdx; }
