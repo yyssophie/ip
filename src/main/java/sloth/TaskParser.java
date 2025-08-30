@@ -139,6 +139,17 @@ public class TaskParser {
                 throw new SlothException("eep! This is not a valid number. Try: delete 1");
             }
         }
+        if (command.startsWith("find ")) {
+            String[] parts = command.split("\\s+", 2);
+            if (parts.length < 2) {
+                throw new SlothException("eep! I need a keyword to search for. Try: find book");
+            }
+            String keyword = parts[1].trim();
+            if (keyword.isEmpty()) {
+                throw new SlothException("eep! Little sloth need a keyword to search for. Try: find book");
+            }
+            return new FindCommand(keyword);
+        }
 
         // everything else is an add: todo / deadline / event
         Task task = TaskParser.parseInput(command);

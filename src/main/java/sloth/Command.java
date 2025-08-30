@@ -193,3 +193,37 @@ class DeleteCommand extends Command {
         ui.showDeleted(task, tasks.size());
     }
 }
+
+
+/**
+ * Command to find  a task
+ * by searching for a keyword in the task description
+ */
+class FindCommand extends Command {
+    private final String keyword;
+
+    public FindCommand(String keyword) {
+        this.keyword = keyword;
+    }
+
+    /**
+     * Executes find command by looping through all tasks in task list
+     * to find tasks that match the key word
+     * @param tasks the task list to operate on
+     * @param ui the user interface for displaying messages
+     * @param storage the storage system for persisting tasks
+     */
+    @Override
+    public void execute(TaskList tasks, UI ui, Storage storage) {
+        java.util.ArrayList<Task> allTasks = tasks.asList();
+        java.util.ArrayList<Task> matchingTasks = new java.util.ArrayList<>();
+
+        for (Task task : allTasks) {
+            if (task.getContent().toLowerCase().contains(keyword.toLowerCase())) {
+                matchingTasks.add(task);
+            }
+        }
+
+        ui.showFoundTasks(matchingTasks);
+    }
+}
