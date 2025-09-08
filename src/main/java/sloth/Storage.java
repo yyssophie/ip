@@ -1,8 +1,13 @@
 package sloth;
 
-import java.nio.file.*;
-import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
+
 /**
  * Handles persistent storage of tasks to and from the file system.
  * Uses a simple text file format to store task data in the data/sloth.txt file.
