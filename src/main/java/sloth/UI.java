@@ -1,6 +1,8 @@
 package sloth;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Handles all user interface operations for the Sloth task management application.
