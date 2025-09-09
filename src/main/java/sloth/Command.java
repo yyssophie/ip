@@ -23,7 +23,7 @@ public abstract class Command {
      * @param storage the storage system for persisting tasks
      * @throws SlothException if an error occurs during command execution
      */
-    public abstract void execute(TaskList tasks, UI ui, Storage storage) throws SlothException;
+    public abstract String execute(TaskList tasks, UI ui, Storage storage) throws SlothException;
 }
 
 /**
@@ -50,9 +50,9 @@ class ByeCommand extends Command {
      * @param storage the storage system for saving tasks
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
         storage.save(tasks.asList());
-        ui.showGoodbye();
+        return ui.showGoodbye();
     }
 }
 
@@ -69,8 +69,8 @@ class ListCommand extends Command {
      * @param storage the storage system (not used in this command)
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
-        ui.showList(tasks.asList());
+    public String execute(TaskList tasks, UI ui, Storage storage) {
+        return ui.showList(tasks.asList());
     }
 }
 
@@ -97,10 +97,10 @@ class AddTaskCommand extends Command {
      * @param storage the storage system for persisting the updated task list
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
         tasks.add(task);
         storage.save(tasks.asList());
-        ui.showAdded(task, tasks.size());
+        return ui.showAdded(task, tasks.size());
     }
 }
 
@@ -127,10 +127,10 @@ class MarkCommand extends Command {
      * @param storage the storage system for persisting the updated task list
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
         Task task = tasks.mark(index);
         storage.save(tasks.asList());
-        ui.showMarked(task, true);
+        return ui.showMarked(task, true);
     }
 }
 
@@ -157,10 +157,10 @@ class UnmarkCommand extends Command {
      * @param storage the storage system for persisting the updated task list
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
         Task task = tasks.unmark(index);
         storage.save(tasks.asList());
-        ui.showMarked(task, false);
+        return ui.showMarked(task, false);
     }
 }
 
@@ -187,10 +187,10 @@ class DeleteCommand extends Command {
      * @param storage the storage system for persisting the updated task list
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
         Task task = tasks.delete(index);
         storage.save(tasks.asList());
-        ui.showDeleted(task, tasks.size());
+        return ui.showDeleted(task, tasks.size());
     }
 }
 
@@ -214,7 +214,7 @@ class FindCommand extends Command {
      * @param storage the storage system for persisting tasks
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
         java.util.ArrayList<Task> allTasks = tasks.asList();
         java.util.ArrayList<Task> matchingTasks = new java.util.ArrayList<>();
 
@@ -224,6 +224,6 @@ class FindCommand extends Command {
             }
         }
 
-        ui.showFoundTasks(matchingTasks);
+        return ui.showFoundTasks(matchingTasks);
     }
 }
