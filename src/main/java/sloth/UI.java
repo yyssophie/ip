@@ -19,7 +19,7 @@ public class UI {
      */
     public String showWelcome() {
         String logo = "   🌿─────\n  ( - . - )\n  /(   づ )\n  ╯ ╯ ╯ ╯\n";
-        String word = logo + "Hello, I am ... Sloth\n" + logo + "\nHow can I help you today?🦥";
+        String word = logo + "Hello, I am ... Sloth\n" + "\nHow can I help you today?🦥";
         println(line);
         println(line);
         println(word);
@@ -73,7 +73,7 @@ public class UI {
         String list = "";
         println(line);
         for (int i = 0; i < tasks.size(); i++) {
-            list += "\t" + (i+1) + ". " + tasks.get(i);
+            list += (i+1) + ". " + tasks.get(i) + "\n";
             println("\t" + (i+1) + ". " + tasks.get(i));
         }
         println(line);
