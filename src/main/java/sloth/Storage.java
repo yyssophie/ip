@@ -7,6 +7,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
+import sloth.task.Task;
+import sloth.exception.SlothException;
 
 /**
  * Handles persistent storage of tasks to and from the file system.

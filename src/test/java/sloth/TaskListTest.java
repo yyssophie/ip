@@ -6,6 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import sloth.task.Task;
+import sloth.task.Event;
+import sloth.task.ToDo;
+import sloth.task.Deadline;
 
 public class TaskListTest {
 

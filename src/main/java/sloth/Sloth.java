@@ -1,5 +1,8 @@
 package sloth;
 
+import sloth.command.Command;
+import sloth.exception.SlothException;
+
 /**
  * Main class for the Sloth task management application.
  * Coordinates the interaction between UI, Storage, and TaskList components
