@@ -28,11 +28,11 @@ import java.util.regex.Pattern;
  */
 public class TaskParser {
     private static final Pattern TODO =
-            Pattern.compile("^\\s*todo\\s+(?<content>.+)\\s*$");
+            Pattern.compile("^\\s*todo\\s+(?<content>.+?)(?:\\s+/after\\s+(?<after>\\d+))?\\s*$");
     private static final Pattern DEADLINE =
-            Pattern.compile("^\\s*deadline\\s+(?<content>.+?)\\s+/by\\s+(?<by>.+)\\s*$");
+            Pattern.compile("^\\s*deadline\\s+(?<content>.+?)\\s+/by\\s+(?<by>.+)(?:\\s+/after\\s+(?<after>\\d+))?\\s*$");
     private static final Pattern EVENT =
-            Pattern.compile("^\\s*event\\s+(?<content>.+?)\\s+/from\\s+(?<from>.+?)\\s+/to\\s+(?<to>.+)\\s*$");
+            Pattern.compile("^\\s*event\\s+(?<content>.+?)\\s+/from\\s+(?<from>.+?)\\s+/to\\s+(?<to>.+)(?:\\s+/after\\s+(?<after>\\d+))?\\s*$");
 
     /**
      * Parses a date/time string using multiple flexible formats.
@@ -77,18 +77,41 @@ public class TaskParser {
     public static Task parseInput(String input) throws SlothException {
         Matcher matcher;
         if ((matcher = TODO.matcher(input)).matches()) {
-            return new ToDo(matcher.group("content"));
+            String content = matcher.group("content");
+            String after = matcher.group("after");
+            if (after == null) {
+                return new ToDo(content);
+            } else {
+                int beforeIdx = Integer.parseInt(after);
+                return new ToDo(content, beforeIdx);
+            }
         } else if ((matcher = DEADLINE.matcher(input)).matches()) {
+            String content = matcher.group("content");
             String date = matcher.group("by");
             LocalDateTime dueDate = TaskParser.parseFlexibleDateTime(date);
-            return new Deadline(matcher.group("content").trim(), dueDate);
+            String after = matcher.group("after");
+            if (after == null) {
+                return  new Deadline(content, dueDate);
+            } else {
+                int beforeIdx = Integer.parseInt(after);
+                return new Deadline(content, dueDate, beforeIdx);
+            }
+
         } else if ((matcher = EVENT.matcher(input)).matches()) {
             String from = matcher.group("from");
             String to = matcher.group("to");
+            String content = matcher.group("content");
+            String after = matcher.group("after");
             LocalDateTime startTime = TaskParser.parseFlexibleDateTime(from);
             LocalDateTime endTime = TaskParser.parseFlexibleDateTime(to);
             assert endTime.isAfter(startTime) : "Event '/to' must be >= '/from'";
-            return new Event(matcher.group("content").trim(), startTime, endTime);
+            if (after == null) {
+                return new Event(content, startTime, endTime);
+            } else {
+                int beforeIdx = Integer.parseInt(after);
+                return new Event(content, startTime, endTime, beforeIdx);
+            }
+
         } else {
             String command = input.split("\\s+", 2)[0].toLowerCase();
             if (command.equals("todo")) {
@@ -194,7 +217,8 @@ public class TaskParser {
         boolean isDone = doneFlag.equals("1");
         switch (type) {
             case "T":
-                ToDo todo = new ToDo(content);
+                int beforeIdx = Integer.parseInt(parts[3]);
+                ToDo todo = new ToDo(content, beforeIdx);
                 if (isDone) {
                     todo.toggleStatus();
                 }
@@ -204,9 +228,11 @@ public class TaskParser {
                     throw new ParseException("deadline missing /by");
                 }
                 String by = parts[3];
+                int bIdx = Integer.parseInt(parts[4]);
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm");
                 LocalDateTime dueDateTime = LocalDateTime.parse(by, formatter);
-                Deadline deadline = new Deadline(content, dueDateTime);
+
+                Deadline deadline = new Deadline(content, dueDateTime, bIdx);
                 if (isDone) {
                     deadline.toggleStatus();
                 }
@@ -215,12 +241,15 @@ public class TaskParser {
                 if (parts.length < 5) {
                     throw new ParseException("event missing /from or /to");
                 }
+                int bbIdx = Integer.parseInt(parts[5]);
+
                 String from = parts[3];
                 String to = parts[4];
                 DateTimeFormatter eventFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm");
                 LocalDateTime startDateTime = LocalDateTime.parse(from, eventFormatter);
                 LocalDateTime endDateTime = LocalDateTime.parse(to, eventFormatter);
-                Event event = new Event(content, startDateTime, endDateTime);
+
+                Event event = new Event(content, startDateTime, endDateTime, bbIdx);
                 if (isDone) {
                     event.toggleStatus();
                 }
