@@ -16,6 +16,12 @@ public class ToDo extends Task {
         super(content);
     }
 
+
+    public ToDo(String content, int beforeTaskIdx) {
+        super(content, beforeTaskIdx);
+    }
+
+
     /**
      * Returns a string representation with todo-specific formatting.
      *
