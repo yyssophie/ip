@@ -1,11 +1,11 @@
-package GUI;
+package gui;
 
 import sloth.Sloth;
 import sloth.TaskList;
 import sloth.UI;
 import sloth.Storage;
-import sloth.Command;
-import sloth.SlothException;
+import sloth.command.Command;
+import sloth.exception.SlothException;
 import sloth.TaskParser;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

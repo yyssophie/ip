@@ -3,6 +3,5 @@ D | 0 | ddl | Jan 01 2025, 12:59
 D | 0 | just do it | Jan 07 2008, 12:59
 T | 1 | love you
 T | 1 | love you
-T | 0 | love you
 T | 0 | hehe
-T | 0 | ahah
+T | 0 | hate NUS

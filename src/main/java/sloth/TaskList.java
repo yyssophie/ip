@@ -1,5 +1,7 @@
 package sloth;
+
 import java.util.ArrayList;
+import sloth.task.Task;
 
 /**
  * Manages a collection of tasks with operations for adding, removing, and modifying tasks.

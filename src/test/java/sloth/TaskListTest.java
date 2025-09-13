@@ -3,9 +3,20 @@ package sloth;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import static org.junit.jupiter.api.Assertions.*;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import sloth.task.Task;
+import sloth.task.Event;
+import sloth.task.ToDo;
+import sloth.task.Deadline;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class TaskListTest {
 
@@ -31,7 +42,7 @@ public class TaskListTest {
 
     @Test
     @DisplayName("Test mark method marks an unmarked task")
-    public void testMark_UnmarkedTask() {
+    public void testMark_unmarkedTask() {
         // Ensure the task is initially unmarked
         assertEquals(" ", todoTask.getStatus());
         assertFalse(todoTask.isDone());
@@ -47,7 +58,7 @@ public class TaskListTest {
 
     @Test
     @DisplayName("Test mark method does not change already marked task")
-    public void testMark_AlreadyMarkedTask() {
+    public void testMark_alreadyMarkedTask() {
         // First mark the task
         todoTask.toggleStatus();
         assertEquals("X", todoTask.getStatus());
@@ -64,7 +75,7 @@ public class TaskListTest {
 
     @Test
     @DisplayName("Test mark method with different task types")
-    public void testMark_DifferentTaskTypes() {
+    public void testMark_differentTaskTypes() {
         // Test marking a Deadline task
         assertEquals(" ", deadlineTask.getStatus());
         Task markedDeadline = taskList.mark(2);
@@ -80,7 +91,7 @@ public class TaskListTest {
 
     @Test
     @DisplayName("Test mark method throws exception for invalid index (too high)")
-    public void testMark_InvalidIndexTooHigh() {
+    public void testMark_invalidIndexTooHigh() {
         assertThrows(IndexOutOfBoundsException.class, () -> {
             taskList.mark(10);  // Only 3 tasks in the list
         });
@@ -88,7 +99,7 @@ public class TaskListTest {
 
     @Test
     @DisplayName("Test mark method throws exception for invalid index (zero)")
-    public void testMark_InvalidIndexZero() {
+    public void testMark_invalidIndexZero() {
         assertThrows(IndexOutOfBoundsException.class, () -> {
             taskList.mark(0);  // 1-based indexing, so 0 is invalid
         });
@@ -96,7 +107,7 @@ public class TaskListTest {
 
     @Test
     @DisplayName("Test mark method throws exception for negative index")
-    public void testMark_NegativeIndex() {
+    public void testMark_negativeIndex() {
         assertThrows(IndexOutOfBoundsException.class, () -> {
             taskList.mark(-1);
         });
@@ -104,7 +115,7 @@ public class TaskListTest {
 
     @Test
     @DisplayName("Test mark method on empty task list")
-    public void testMark_EmptyTaskList() {
+    public void testMark_emptyTaskList() {
         TaskList emptyList = new TaskList();
 
         assertThrows(IndexOutOfBoundsException.class, () -> {
@@ -114,7 +125,7 @@ public class TaskListTest {
 
     @Test
     @DisplayName("Test mark method preserves task content and other properties")
-    public void testMark_PreservesTaskProperties() {
+    public void testMark_preservesTaskProperties() {
         // Test with Deadline task to ensure dates are preserved
         String originalContent = deadlineTask.getContent();
         String originalToString = deadlineTask.toString();
@@ -131,7 +142,7 @@ public class TaskListTest {
 
     @Test
     @DisplayName("Test mark method with task list created from existing list")
-    public void testMark_WithPreloadedTaskList() {
+    public void testMark_withPreloadedTaskList() {
         // Create a new task list from existing tasks
         ArrayList<Task> existingTasks = new ArrayList<>();
         ToDo preloadedTask = new ToDo("Preloaded task");
