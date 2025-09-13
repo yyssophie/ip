@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 
 import sloth.Sloth;
 import sloth.TaskList;
