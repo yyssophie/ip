@@ -98,7 +98,9 @@ class AddTaskCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, UI ui, Storage storage) {
+        int before = tasks.size();
         tasks.add(task);
+        assert tasks.size() == before + 1 : "TaskList size should increase by 1 after add";
         storage.save(tasks.asList());
         return ui.showAdded(task, tasks.size());
     }
@@ -128,8 +130,10 @@ class MarkCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, UI ui, Storage storage) {
+        assert index >= 1 && index <= tasks.size() : "Mark index out of range: " + index;
         Task task = tasks.mark(index);
         storage.save(tasks.asList());
+        assert task.isDone() : "Marked task should be done";
         return ui.showMarked(task, true);
     }
 }
@@ -158,8 +162,10 @@ class UnmarkCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, UI ui, Storage storage) {
+        assert index >= 1 && index <= tasks.size() : "Mark index out of range: " + index;
         Task task = tasks.unmark(index);
         storage.save(tasks.asList());
+        assert !task.isDone() : "Marked task should be undone";
         return ui.showMarked(task, false);
     }
 }
@@ -176,6 +182,7 @@ class DeleteCommand extends Command {
      * @param oneBasedIndex the 1-based index of the task to delete
      */
     public DeleteCommand(int oneBasedIndex) {
+        assert oneBasedIndex > 0 : "Delete index must be 1-based positive";
         this.index = oneBasedIndex;
     }
 
@@ -188,8 +195,12 @@ class DeleteCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, UI ui, Storage storage) {
+        assert index >= 1 && index <= tasks.size() : "Delete index out of range: " + index;
+        int before = tasks.size();
         Task task = tasks.delete(index);
         storage.save(tasks.asList());
+        assert task != null : "Deleted task should not be null";
+        assert tasks.size() == before - 1 : "TaskList size should decrease by 1 after delete";
         return ui.showDeleted(task, tasks.size());
     }
 }
@@ -203,6 +214,7 @@ class FindCommand extends Command {
     private final String keyword;
 
     public FindCommand(String keyword) {
+        assert keyword != null && !keyword.isBlank() : "Find keyword must be non-empty";
         this.keyword = keyword;
     }
 
