@@ -71,6 +71,7 @@ public class TaskParser {
             String to = matcher.group("to");
             LocalDateTime startTime = TaskParser.parseFlexibleDateTime(from);
             LocalDateTime endTime = TaskParser.parseFlexibleDateTime(to);
+            assert endTime.isAfter(startTime) : "Event '/to' must be >= '/from'";
             return new Event(matcher.group("content").trim(), startTime, endTime);
         } else {
             String command = input.split("\\s+", 2)[0].toLowerCase();
