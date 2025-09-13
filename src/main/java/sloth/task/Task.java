@@ -22,6 +22,7 @@ public class Task {
         this.done = false;
     }
 
+
     public Task(String content, int beforeTaskIdx) {
         this.content = content;
         this.done = false;
@@ -109,6 +110,8 @@ public class Task {
      * @return formatted string for file storage
      */
     public String to_storage_string() {
+
         return "T | " + (this.done ? "1" : "0") + " | " + this.content + " | " + this.getBeforeTaskIdx();
+
     }
 }

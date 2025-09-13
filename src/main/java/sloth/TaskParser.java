@@ -111,6 +111,7 @@ public class TaskParser {
                 int beforeIdx = Integer.parseInt(after);
                 return new Event(content, startTime, endTime, beforeIdx);
             }
+
         } else {
             String command = input.split("\\s+", 2)[0].toLowerCase();
             if (command.equals("todo")) {
@@ -230,6 +231,7 @@ public class TaskParser {
                 int bIdx = Integer.parseInt(parts[4]);
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm");
                 LocalDateTime dueDateTime = LocalDateTime.parse(by, formatter);
+
                 Deadline deadline = new Deadline(content, dueDateTime, bIdx);
                 if (isDone) {
                     deadline.toggleStatus();
@@ -240,11 +242,13 @@ public class TaskParser {
                     throw new ParseException("event missing /from or /to");
                 }
                 int bbIdx = Integer.parseInt(parts[5]);
+
                 String from = parts[3];
                 String to = parts[4];
                 DateTimeFormatter eventFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm");
                 LocalDateTime startDateTime = LocalDateTime.parse(from, eventFormatter);
                 LocalDateTime endDateTime = LocalDateTime.parse(to, eventFormatter);
+
                 Event event = new Event(content, startDateTime, endDateTime, bbIdx);
                 if (isDone) {
                     event.toggleStatus();

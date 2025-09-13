@@ -90,11 +90,13 @@ public class UI {
      */
     public String showAdded(Task t, int size) {
         String word = "okayy ... I've added " + t + "\n";
+
         println("okayy ... I've added " + t);
         if(t.getBeforeTaskIdx() != -1) {
             word += " It must be done after task " + t.getBeforeTaskIdx() + "\n";
         }
         println("Now you have " + size + " tasks 🦥");
+
         word += "Now you have " + size + " tasks 🦥";
         return word;
     }

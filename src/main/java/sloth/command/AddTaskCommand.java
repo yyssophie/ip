@@ -31,6 +31,7 @@ public class AddTaskCommand extends Command {
     public String execute(TaskList tasks, UI ui, Storage storage) {
         int before = tasks.size();
         tasks.add(task);
+
         int idx = before + 1; // index of this newly added task
         task.setIdx(idx);
         int beforeTaskIdx = task.getIdx();
@@ -39,6 +40,7 @@ public class AddTaskCommand extends Command {
             beforeTask.setAfterTaskIdx(idx);
         }
         assert tasks.size() == idx : "TaskList size should increase by 1 after add";
+
         storage.save(tasks.asList());
         return ui.showAdded(task, tasks.size());
     }
