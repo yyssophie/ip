@@ -30,6 +30,7 @@ public class UnmarkCommand extends Command {
     @Override
     public String execute(TaskList tasks, UI ui, Storage storage) {
         assert index >= 1 && index <= tasks.size() : "Mark index out of range: " + index;
+        Task t = tasks.get(index);
         Task task = tasks.unmark(index);
         storage.save(tasks.asList());
         assert !task.isDone() : "Marked task should be undone";

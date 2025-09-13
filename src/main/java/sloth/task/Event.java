@@ -25,6 +25,12 @@ public class Event extends Task {
         this.startDate = startDate;
     }
 
+    public Event(String content, LocalDateTime startDate, LocalDateTime endDate,  int beforeTaskIdx) {
+        super(content, beforeTaskIdx);
+        this.endDate = endDate;
+        this.startDate = startDate;
+    }
+
     /**
      * Returns a string representation with event-specific formatting.
      *
@@ -46,6 +52,7 @@ public class Event extends Task {
     public String to_storage_string() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm");
         return "E | " + (this.isDone() ? "1" : "0") + " | " + getContent() + " | " +
-                this.startDate.format(formatter) + " | " + this.endDate.format(formatter);
+                this.startDate.format(formatter) + " | " + this.endDate.format(formatter)
+                + " | " + this.getBeforeTaskIdx();
     }
 }
