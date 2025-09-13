@@ -3,6 +3,7 @@ package sloth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import sloth.task.Task;
 
 /**
  * Handles all user interface operations for the Sloth task management application.
@@ -144,11 +145,11 @@ public class UI {
             word = "Oops, there is no matching tasks found in your list 🦥\n";
             println("Oops, there is no matching tasks found in your list 🦥");
         } else {
-            word = "aha ~ Here are the matching tasks in your list:";
+            word = "aha ~ Here are the matching tasks in your list:\n";
             println("aha ~ Here are the matching tasks in your list:");
             for (int i = 0; i < matchingTasks.size(); i++) {
                 println("\t" + (i + 1) + "." + matchingTasks.get(i));
-                word += "\t" + (i + 1) + "." + matchingTasks.get(i);
+                word += "\t" + (i + 1) + "." + matchingTasks.get(i) + "\n";
             }
         }
         println(line);
