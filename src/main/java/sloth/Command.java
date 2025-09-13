@@ -23,7 +23,7 @@ public abstract class Command {
      * @param storage the storage system for persisting tasks
      * @throws SlothException if an error occurs during command execution
      */
-    public abstract void execute(TaskList tasks, UI ui, Storage storage) throws SlothException;
+    public abstract String execute(TaskList tasks, UI ui, Storage storage) throws SlothException;
 }
 
 /**
@@ -50,9 +50,9 @@ class ByeCommand extends Command {
      * @param storage the storage system for saving tasks
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
         storage.save(tasks.asList());
-        ui.showGoodbye();
+        return ui.showGoodbye();
     }
 }
 
@@ -69,8 +69,8 @@ class ListCommand extends Command {
      * @param storage the storage system (not used in this command)
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
-        ui.showList(tasks.asList());
+    public String execute(TaskList tasks, UI ui, Storage storage) {
+        return ui.showList(tasks.asList());
     }
 }
 
@@ -97,10 +97,12 @@ class AddTaskCommand extends Command {
      * @param storage the storage system for persisting the updated task list
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
+        int before = tasks.size();
         tasks.add(task);
+        assert tasks.size() == before + 1 : "TaskList size should increase by 1 after add";
         storage.save(tasks.asList());
-        ui.showAdded(task, tasks.size());
+        return ui.showAdded(task, tasks.size());
     }
 }
 
@@ -127,10 +129,12 @@ class MarkCommand extends Command {
      * @param storage the storage system for persisting the updated task list
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
+        assert index >= 1 && index <= tasks.size() : "Mark index out of range: " + index;
         Task task = tasks.mark(index);
         storage.save(tasks.asList());
-        ui.showMarked(task, true);
+        assert task.isDone() : "Marked task should be done";
+        return ui.showMarked(task, true);
     }
 }
 
@@ -157,10 +161,12 @@ class UnmarkCommand extends Command {
      * @param storage the storage system for persisting the updated task list
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
+        assert index >= 1 && index <= tasks.size() : "Mark index out of range: " + index;
         Task task = tasks.unmark(index);
         storage.save(tasks.asList());
-        ui.showMarked(task, false);
+        assert !task.isDone() : "Marked task should be undone";
+        return ui.showMarked(task, false);
     }
 }
 
@@ -176,6 +182,7 @@ class DeleteCommand extends Command {
      * @param oneBasedIndex the 1-based index of the task to delete
      */
     public DeleteCommand(int oneBasedIndex) {
+        assert oneBasedIndex > 0 : "Delete index must be 1-based positive";
         this.index = oneBasedIndex;
     }
 
@@ -187,10 +194,14 @@ class DeleteCommand extends Command {
      * @param storage the storage system for persisting the updated task list
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
+        assert index >= 1 && index <= tasks.size() : "Delete index out of range: " + index;
+        int before = tasks.size();
         Task task = tasks.delete(index);
         storage.save(tasks.asList());
-        ui.showDeleted(task, tasks.size());
+        assert task != null : "Deleted task should not be null";
+        assert tasks.size() == before - 1 : "TaskList size should decrease by 1 after delete";
+        return ui.showDeleted(task, tasks.size());
     }
 }
 
@@ -203,6 +214,7 @@ class FindCommand extends Command {
     private final String keyword;
 
     public FindCommand(String keyword) {
+        assert keyword != null && !keyword.isBlank() : "Find keyword must be non-empty";
         this.keyword = keyword;
     }
 
@@ -214,7 +226,7 @@ class FindCommand extends Command {
      * @param storage the storage system for persisting tasks
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
         java.util.ArrayList<Task> allTasks = tasks.asList();
         java.util.ArrayList<Task> matchingTasks = new java.util.ArrayList<>();
 
@@ -224,6 +236,6 @@ class FindCommand extends Command {
             }
         }
 
-        ui.showFoundTasks(matchingTasks);
+        return ui.showFoundTasks(matchingTasks);
     }
 }

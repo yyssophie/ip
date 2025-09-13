@@ -26,9 +26,9 @@ class UnknownCommandException extends SlothException {
      */
     public UnknownCommandException(String cmd) {
         super("hmm… I don’t recognise the command: \"" + cmd + "\".\n"
-                + "But here is what I know:"
-                + "todo <desc> | deadline <desc> /by <when> | event <desc> /from <from> /to <to> " +
-                "| list | mark <n> | unmark <n> | bye");
+                + "But here is what I know:\n"
+                + "todo <something>\ndeadline <something> /by <when>\nevent <something> /from <when> /to <when>\n" +
+                "list\nmark <n>\nunmark <n>\nbye");
     }
 }
 

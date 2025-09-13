@@ -17,11 +17,13 @@ public class UI {
      * Displays the welcome message with the Sloth logo when the application starts.
      * Shows the application greeting and ASCII art logo.
      */
-    public void showWelcome() {
+    public String showWelcome() {
         String logo = "   🌿─────\n  ( - . - )\n  /(   づ )\n  ╯ ╯ ╯ ╯\n";
+        String word = logo + "Hello, I am ... Sloth\n" + "\nHow can I help you today?🦥";
         println(line);
-        println("Hello, I am ... Sloth\n" + logo + "\nHow can I help you today?🦥");
         println(line);
+        println(word);
+        return word;
     }
 
     /**
@@ -53,10 +55,12 @@ public class UI {
      * Displays the goodbye message when the application is exiting.
      * Shows a farewell message with sloth-themed text.
      */
-    public void showGoodbye() {
+    public String showGoodbye() {
+        String word = "Bye. Hope to see you soon~\nI'm gonna...go back to...sleep  zZZ 🦥";
         println(line);
-        println("Bye. Hope to see you soon~\nI'm gonna...go back to...sleep  zZZ 🦥");
+        println(word);
         println(line);
+        return word;
     }
 
     /**
@@ -65,10 +69,15 @@ public class UI {
      *
      * @param tasks the list of tasks to display
      */
-    public void showList(List<Task> tasks) {
+    public String showList(List<Task> tasks) {
+        String list = "";
         println(line);
-        for (int i = 0; i < tasks.size(); i++) println("\t" + (i+1) + ". " + tasks.get(i));
+        for (int i = 0; i < tasks.size(); i++) {
+            list += (i+1) + ". " + tasks.get(i) + "\n";
+            println("\t" + (i+1) + ". " + tasks.get(i));
+        }
         println(line);
+        return list;
     }
 
     /**
@@ -78,9 +87,11 @@ public class UI {
      * @param t the task that was added
      * @param size the new total number of tasks
      */
-    public void showAdded(Task t, int size) {
+    public String showAdded(Task t, int size) {
+        String word = "okayy ... I've added " + t + "\n" + "Now you have " + size + " tasks 🦥";
         println("okayy ... I've added " + t);
         println("Now you have " + size + " tasks 🦥");
+        return word;
     }
 
     /**
@@ -90,9 +101,11 @@ public class UI {
      * @param t the task whose status was changed
      * @param done true if the task was marked as done, false if marked as undone
      */
-    public void showMarked(Task t, boolean done) {
-        println(done ? "sniff sniff! I've marked as done:\n" + t
-                : "okay... I've marked as undone:\n" + t);
+    public String showMarked(Task t, boolean done) {
+        String word = done ? "sniff sniff! I've marked as done:\n" + t
+                : "okay... I've marked as undone:\n" + t;
+        println(word);
+        return word;
     }
 
     /**
@@ -102,9 +115,10 @@ public class UI {
      * @param t the task that was deleted
      * @param size the new total number of tasks after deletion
      */
-    public void showDeleted(Task t, int size) {
-        println("Got it ..... I removed this task\n" + t);
-        println("Now you have " + size + " tasks 🦥");
+    public String showDeleted(Task t, int size) {
+        String word = "Got it ..... I removed this task\n" + t + "Now you have " + size + " tasks 🦥";
+        println(word);
+        return word;
     }
 
     /**
@@ -123,16 +137,21 @@ public class UI {
      *
      * @param matchingTasks the list of tasks that match the search keyword
      */
-    public void showFoundTasks(ArrayList<Task> matchingTasks) {
+    public String showFoundTasks(ArrayList<Task> matchingTasks) {
         println(line);
+        String word;
         if (matchingTasks.isEmpty()) {
+            word = "Oops, there is no matching tasks found in your list 🦥\n";
             println("Oops, there is no matching tasks found in your list 🦥");
         } else {
+            word = "aha ~ Here are the matching tasks in your list:";
             println("aha ~ Here are the matching tasks in your list:");
             for (int i = 0; i < matchingTasks.size(); i++) {
                 println("\t" + (i + 1) + "." + matchingTasks.get(i));
+                word += "\t" + (i + 1) + "." + matchingTasks.get(i);
             }
         }
         println(line);
+        return word;
     }
 }
