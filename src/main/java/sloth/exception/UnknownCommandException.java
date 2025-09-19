@@ -14,6 +14,6 @@ public class UnknownCommandException extends SlothException {
         super("hmm… I don’t recognise the command: \"" + cmd + "\".\n"
                 + "But here is what I know:\n"
                 + "todo <something>\ndeadline <something> /by <when>\nevent <something> /from <when> /to <when>\n" +
-                "list\nmark <n>\nunmark <n>\n" + "delete <index>\n" +  "find <key word>\n" + "bye");
+                "list\nsort\nmark <n>\nunmark <n>\n" + "delete <index>\n" +  "find <key word>\n" + "bye");
     }
 }

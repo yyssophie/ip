@@ -39,8 +39,8 @@ public class MainWindow extends AnchorPane {
     private Storage storage;
     private TaskParser taskParser;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/cute_girl.jpeg"));
-    private Image slothImage = new Image(this.getClass().getResourceAsStream("/images/cute_sloth.jpg"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/cute_girl.png"));
+    private Image slothImage = new Image(this.getClass().getResourceAsStream("/images/cute_sloth.png"));
 
     /**
      * Initializes the GUI components and sets up automatic scrolling behavior.

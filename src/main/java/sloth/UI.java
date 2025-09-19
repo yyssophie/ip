@@ -117,7 +117,7 @@ public class UI {
      * @param size the new total number of tasks after deletion
      */
     public String showDeleted(Task t, int size) {
-        String word = "Got it ..... I removed this task\n" + t + "Now you have " + size + " tasks 🦥";
+        String word = "Got it ..... I removed this task\n" + t + "\n" + "Now you have " + size + " tasks 🦥";
         println(word);
         return word;
     }
