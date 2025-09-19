@@ -9,6 +9,7 @@ import sloth.exception.SlothException;
 import sloth.exception.EmptyDescriptionException;
 import sloth.exception.UnknownCommandException;
 import sloth.exception.ParseException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -37,7 +38,7 @@ public class TaskParser {
      */
     public static LocalDateTime parseFlexibleDateTime(String dateTimeString) throws SlothException {
         DateTimeFormatter[] formats = new DateTimeFormatter[] {
-                DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm"), // Apr 18 2005, 18:00
+                DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm"),// Apr 18 2005, 18:00
                 DateTimeFormatter.ofPattern("MMM d yyyy, HH:mm"),
                 DateTimeFormatter.ofPattern("MMM d yyyy HH:mm"),
                 DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm"),
@@ -54,9 +55,28 @@ public class TaskParser {
                 // Continue to next format
             }
         }
+
+        DateTimeFormatter[] dateOnlyFormats = new DateTimeFormatter[] {
+                DateTimeFormatter.ofPattern("MMM dd yyyy"),
+                DateTimeFormatter.ofPattern("MMM d yyyy"),
+                DateTimeFormatter.ofPattern("yyyy-MM-dd"),        // 2025-04-18
+                DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+                DateTimeFormatter.ofPattern("d/MM/yyyy"),
+                DateTimeFormatter.ISO_LOCAL_DATE                  // 2025-04-18
+        };
+
+        for (DateTimeFormatter formatter : dateOnlyFormats) {
+            try {
+                LocalDate date = LocalDate.parse(dateTimeString.trim(), formatter);
+                return date.atStartOfDay(); // Convert to LocalDateTime at 00:00
+            } catch (DateTimeParseException ignored) {
+                // Continue to next format
+            }
+        }
+
         throw new SlothException("nuzzz... nuzzzz..\n"
                 + "Little sloth don't understand this date format!\n"
-                + "Try e.g. Apr 18 2025, 18:00 or 2/12/2019 18:00");
+                + "Try e.g. Apr 18 2025 18:00 or 2025-04-18 18:00");
     }
 
     /**

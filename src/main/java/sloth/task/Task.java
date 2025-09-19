@@ -74,6 +74,19 @@ public class Task implements Comparable<Task> {
         return "T | " + (this.done ? "1" : "0") + " | " + this.content;
     }
 
+    /**
+     * Compares this task with another task for chronological ordering.
+     * Sorting priority:
+     * 1. Todo tasks come last (sorted alphabetically among themselves)
+     * 2. Deadline tasks are sorted by their due date
+     * 3. Event tasks are sorted by their start time
+     * 4. When comparing different task types, time-based tasks come before todos,
+     *    and deadlines vs events are compared by their respective time constraints
+     *
+     * @param o the other task to compare with
+     * @return negative integer if this task comes before o, positive if after,
+     *         zero if they are considered equal in ordering
+     */
     @Override
     public int compareTo(Task o) {
         if (this instanceof ToDo) {
