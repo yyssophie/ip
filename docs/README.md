@@ -1,9 +1,9 @@
 # Sloth User Guide
-
 Meet Sloth, your laid-back task management companion who takes life one slow step at a time 🦥.
 
 Sloth embraces a relaxed approach to organization. With gentle reminders, patient responses, and a "no rush" attitude, Sloth helps you manage your todos, deadlines, and events without the stress. Perfect for those who prefer to work at their own pace while staying organized.
 
+![Sloth UI](Ui.png)
 ## Quick Start
 
 1. Ensure you have Java `17` or above installed on your computer
