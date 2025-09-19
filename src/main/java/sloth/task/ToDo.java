@@ -16,12 +16,6 @@ public class ToDo extends Task {
         super(content);
     }
 
-
-    public ToDo(String content, int beforeTaskIdx) {
-        super(content, beforeTaskIdx);
-    }
-
-
     /**
      * Returns a string representation with todo-specific formatting.
      *
@@ -31,4 +25,5 @@ public class ToDo extends Task {
     public String toString() {
         return "[" + this.type + "] [" + this.getStatus() + "] " + this.getContent();
     }
+
 }

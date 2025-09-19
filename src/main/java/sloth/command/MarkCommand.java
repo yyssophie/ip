@@ -3,8 +3,6 @@ package sloth.command;
 import sloth.Storage;
 import sloth.TaskList;
 import sloth.UI;
-import sloth.exception.PrerequisiteNotDoneException;
-import sloth.exception.SlothException;
 import sloth.task.Task;
 
 /**
@@ -30,16 +28,11 @@ public class MarkCommand extends Command {
      * @param storage the storage system for persisting the updated task list
      */
     @Override
-    public String execute(TaskList tasks, UI ui, Storage storage) throws SlothException {
+    public String execute(TaskList tasks, UI ui, Storage storage) {
         assert index >= 1 && index <= tasks.size() : "Mark index out of range: " + index;
-        Task t = tasks.get(index);
-        Task beforeTask = t.getBeforeTaskIdx() == -1 ? null : tasks.get(t.getBeforeTaskIdx());
-        if (beforeTask == null || beforeTask.isDone()) {
-            Task task = tasks.mark(index);
-            storage.save(tasks.asList());
-            return ui.showMarked(task, true);
-        } else {
-            throw new PrerequisiteNotDoneException(t, beforeTask);
-        }
+        Task task = tasks.mark(index);
+        storage.save(tasks.asList());
+        assert task.isDone() : "Marked task should be done";
+        return ui.showMarked(task, true);
     }
 }
