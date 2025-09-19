@@ -89,15 +89,9 @@ public class UI {
      * @param size the new total number of tasks
      */
     public String showAdded(Task t, int size) {
-        String word = "okayy ... I've added " + t + "\n";
-
+        String word = "okayy ... I've added " + t + "\n" + "Now you have " + size + " tasks 🦥";
         println("okayy ... I've added " + t);
-        if(t.getBeforeTaskIdx() != -1) {
-            word += " It must be done after task " + t.getBeforeTaskIdx() + "\n";
-        }
         println("Now you have " + size + " tasks 🦥");
-
-        word += "Now you have " + size + " tasks 🦥";
         return word;
     }
 
@@ -159,6 +153,15 @@ public class UI {
             }
         }
         println(line);
+        return word;
+    }
+
+    public String showSorted(TaskList tasks) {
+        String word = "Ok, I've sorted all tasks in the list\n";
+        for (int i = 1; i <= tasks.size(); i++) {
+            word += i + ". " + tasks.get(i) + "\n";
+        }
+        println(word);
         return word;
     }
 }

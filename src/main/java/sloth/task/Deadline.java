@@ -21,13 +21,9 @@ public class Deadline extends Task {
         super(content);
         this.endDate = endDate;
     }
-
-
-    public Deadline(String content, LocalDateTime endDate, int beforeTaskIdx) {
-        super(content,  beforeTaskIdx);
-        this.endDate = endDate;
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
-
     /**
      * Returns a string representation with deadline-specific formatting.
      *
@@ -48,8 +44,6 @@ public class Deadline extends Task {
     @Override
     public String to_storage_string() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy, HH:mm");
-
-        return "D | " + (this.isDone() ? "1" : "0") + " | " + getContent() + " | " + this.endDate.format(formatter)
-                + " | " + this.getBeforeTaskIdx();
+        return "D | " + (this.isDone() ? "1" : "0") + " | " + getContent() + " | " + this.endDate.format(formatter);
     }
 }

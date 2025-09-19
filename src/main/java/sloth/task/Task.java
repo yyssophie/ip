@@ -4,12 +4,9 @@ package sloth.task;
  * Represents a basic task with content and completion status.
  * Base class for all task types in the Sloth task management system.
  */
-public class Task {
+public class Task implements Comparable<Task> {
     private String content;
     private boolean done;
-    private int idx; // 1-based index of the task in the task lists. unique identifier for each task.
-    private int beforeTaskIdx = -1;
-    private int afterTaskIdx = -1;
 
     /**
      * Constructs a new Task with the specified content.
@@ -21,42 +18,6 @@ public class Task {
         this.content = content;
         this.done = false;
     }
-
-
-    public Task(String content, int beforeTaskIdx) {
-        this.content = content;
-        this.done = false;
-        this.beforeTaskIdx = beforeTaskIdx;
-    }
-
-    /**
-     * Set index of a task after it's added to the task list
-     * @param idx of the task in list
-     */
-    public void setIdx(int idx) {
-        this.idx = idx;
-    }
-
-    public void setBeforeTaskIdx(int beforeTaskIdx) {
-        this.beforeTaskIdx = beforeTaskIdx;
-    }
-
-    public void setAfterTaskIdx(int afterTaskIdx) {
-        this.afterTaskIdx = afterTaskIdx;
-    }
-
-    public int getBeforeTaskIdx() {
-        return beforeTaskIdx;
-    }
-
-    public int getAfterTaskIdx() {
-        return afterTaskIdx;
-    }
-
-    public int getIdx() {
-        return this.idx;
-    }
-
 
     /**
      * Gets the content/description of this task.
@@ -110,8 +71,33 @@ public class Task {
      * @return formatted string for file storage
      */
     public String to_storage_string() {
+        return "T | " + (this.done ? "1" : "0") + " | " + this.content;
+    }
 
-        return "T | " + (this.done ? "1" : "0") + " | " + this.content + " | " + this.getBeforeTaskIdx();
-
+    @Override
+    public int compareTo(Task o) {
+        if (this instanceof ToDo) {
+            if (o instanceof ToDo) {
+                return this.getContent().compareTo(o.getContent());
+            } else {
+                return -1;
+            }
+        } else if (this instanceof Deadline) {
+            if (o instanceof ToDo) {
+                return 1;
+            } else if (o instanceof Deadline) {
+                return ((Deadline) this).getEndDate().compareTo(((Deadline) o).getEndDate());
+            } else {
+                return ((Deadline) this).getEndDate().compareTo(((Event) o).getStartDate());
+            }
+        } else {
+            if (o instanceof ToDo) {
+                return 1;
+            } else if (o instanceof Deadline) {
+                return ((Event) this).getStartDate().compareTo(((Deadline) o).getEndDate());
+            } else {
+                return ((Event) this).getStartDate().compareTo(((Event) o).getStartDate());
+            }
+        }
     }
 }
