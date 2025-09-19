@@ -59,6 +59,20 @@ public class TaskParserTest {
         assertEquals(expected, result);
     }
 
+    // NEW TEST: Test date-only parsing (previously expected to fail)
+    @Test
+    @DisplayName("Test parseFlexibleDateTime with valid date-only format converts to midnight")
+    public void testParseFlexibleDateTime_dateOnlyFormat() throws SlothException {
+        // Test MMM dd yyyy format (date only)
+        LocalDateTime result = TaskParser.parseFlexibleDateTime("Apr 18 2025");
+        LocalDateTime expected = LocalDateTime.of(2025, 4, 18, 0, 0); // midnight
+        assertEquals(expected, result);
+
+        // Test yyyy-MM-dd format (date only)
+        result = TaskParser.parseFlexibleDateTime("2025-04-18");
+        expected = LocalDateTime.of(2025, 4, 18, 0, 0); // midnight
+        assertEquals(expected, result);
+    }
 
     @Test
     @DisplayName("Test parseFlexibleDateTime throws exception for invalid format")
@@ -68,18 +82,12 @@ public class TaskParserTest {
         });
 
         assertTrue(exception.getMessage().contains("Little sloth don't understand this date format!"));
-        assertTrue(exception.getMessage().contains("Try e.g. Apr 18 2025, 18:00"));
+        // Updated to check for the new error message that includes 2025-04-18
+        assertTrue(exception.getMessage().contains("2025-04-18"));
     }
 
-    @Test
-    @DisplayName("Test parseFlexibleDateTime throws exception for partially valid format")
-    public void testParseFlexibleDateTime_partiallyValidFormat() {
-        SlothException exception = assertThrows(SlothException.class, () -> {
-            TaskParser.parseFlexibleDateTime("Apr 18 2025");  // Missing time
-        });
-
-        assertTrue(exception.getMessage().contains("Little sloth don't understand this date format!"));
-    }
+    // REMOVED: The test that expected "Apr 18 2025" to fail
+    // This now works and converts to midnight, so we test that instead
 
     @Test
     @DisplayName("Test parseFlexibleDateTime throws exception for empty string")
@@ -99,4 +107,14 @@ public class TaskParserTest {
         });
     }
 
+
+    @Test
+    @DisplayName("Test parseFlexibleDateTime throws exception for completely invalid format")
+    public void testParseFlexibleDateTime_completelyInvalidFormat() {
+        SlothException exception = assertThrows(SlothException.class, () -> {
+            TaskParser.parseFlexibleDateTime("not a date at all 123xyz");
+        });
+
+        assertTrue(exception.getMessage().contains("Little sloth don't understand this date format!"));
+    }
 }
