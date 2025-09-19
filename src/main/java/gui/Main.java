@@ -27,6 +27,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         try {
+            stage.setTitle("Sloth");
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
