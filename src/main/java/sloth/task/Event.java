@@ -25,6 +25,11 @@ public class Event extends Task {
         this.startDate = startDate;
     }
 
+    /**
+     * Gets the start date and time for this event.
+     *
+     * @return the LocalDateTime representing when this event starts
+     */
     public LocalDateTime getStartDate() {
         return startDate;
     }

@@ -80,11 +80,11 @@ public class Task implements Comparable<Task> {
             if (o instanceof ToDo) {
                 return this.getContent().compareTo(o.getContent());
             } else {
-                return -1;
+                return 1;
             }
         } else if (this instanceof Deadline) {
             if (o instanceof ToDo) {
-                return 1;
+                return -1;
             } else if (o instanceof Deadline) {
                 return ((Deadline) this).getEndDate().compareTo(((Deadline) o).getEndDate());
             } else {
@@ -92,7 +92,7 @@ public class Task implements Comparable<Task> {
             }
         } else {
             if (o instanceof ToDo) {
-                return 1;
+                return -1;
             } else if (o instanceof Deadline) {
                 return ((Event) this).getStartDate().compareTo(((Deadline) o).getEndDate());
             } else {

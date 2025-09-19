@@ -156,6 +156,13 @@ public class UI {
         return word;
     }
 
+    /**
+     * Displays the sorted list of tasks with their current numbering.
+     * Shows a confirmation message followed by all tasks in their sorted order.
+     *
+     * @param tasks the TaskList containing the sorted tasks to display
+     * @return the formatted string representation of the sorted task list
+     */
     public String showSorted(TaskList tasks) {
         String word = "Ok, I've sorted all tasks in the list\n";
         for (int i = 1; i <= tasks.size(); i++) {

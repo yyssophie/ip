@@ -1,9 +1,8 @@
-T | 0 | bur
-T | 0 | hate NUS
-T | 0 | hehe
-T | 1 | love you
-T | 1 | love you
-E | 1 | love | Apr 08 2005, 13:00 | Apr 19 2006, 14:00
+E | 0 | love | Apr 08 2005, 13:00 | Apr 19 2006, 14:00
 D | 0 | I hate CS2103 | Sep 03 2005, 17:40
 D | 0 | just do it | Jan 07 2008, 12:59
 D | 0 | ddl | Jan 01 2025, 12:59
+T | 0 | bur
+T | 0 | hate NUS
+T | 1 | love you
+T | 1 | love you

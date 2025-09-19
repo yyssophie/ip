@@ -9,12 +9,21 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
- * A GUI for Sloth using FXML.
+ * JavaFX Application class for the Sloth task management system.
+ * Loads the FXML layout, initializes the main window controller,
+ * and manages the primary stage of the GUI application.
  */
 public class Main extends Application {
 
     private Sloth sloth = new Sloth();
 
+    /**
+     * Starts the JavaFX application by setting up the primary stage.
+     * Loads the FXML layout, creates the scene, injects the Sloth instance
+     * into the controller, displays the welcome message, and shows the stage.
+     *
+     * @param stage the primary stage for this application
+     */
     @Override
     public void start(Stage stage) {
         try {

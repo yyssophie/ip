@@ -21,6 +21,12 @@ public class Deadline extends Task {
         super(content);
         this.endDate = endDate;
     }
+
+    /**
+     * Gets the due date and time for this deadline task.
+     *
+     * @return the LocalDateTime representing when this task is due
+     */
     public LocalDateTime getEndDate() {
         return endDate;
     }
